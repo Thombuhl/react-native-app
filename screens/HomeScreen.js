@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
           <View>
             <TouchableOpacity
               style={styles.tripBtn}
-              onPress={() => navigation.navigate("NewTrip")}
+              onPress={() => navigation.navigate("SetHome")}
             >
               <Text style={styles.tripBtnText}>New Trip</Text>
               <MaterialIcons name="chevron-right" size={20} />

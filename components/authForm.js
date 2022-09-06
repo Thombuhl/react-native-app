@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, SafeAreaView, TextInput, Button } from "react-native";
 
-const handleSubmit = () => {
-  ev.preventDefault();
+const handleSubmit = (evt) => {
+  evt.preventDefault();
 };
 
 const AuthForm = () => {
