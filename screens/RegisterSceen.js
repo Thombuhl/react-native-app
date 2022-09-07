@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -9,13 +9,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Directions } from "react-native-gesture-handler";
-import { AuthContext } from "../context/AuthContext";
 import InputField from "./InputField";
 
-const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const { login } = useContext(AuthContext);
+const RegisterScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -27,39 +23,18 @@ const LoginScreen = ({ navigation }) => {
             height={250}
           />
         </View>
-        <InputField
-          label={"Email"}
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-        />
-        <InputField
-          label={"Password"}
-          inputType="password"
-          fieldBtn={"Need Help?"}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <TouchableOpacity
-          style={styles.loginBtn}
-          onPress={() => {
-            login(username, password);
-          }}
-        >
-          <Text>Login</Text>
+
+        <InputField label={"Full Name"} />
+        <InputField label={"Email"} />
+        <InputField label={"Password"} inputType={"password"} />
+        <TouchableOpacity style={styles.loginBtn}>
+          <Text>Register</Text>
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.socialMediaIcons}>
-        <Image
-          style={styles.icons}
-          source={require("../assets/google-logo.png")}
-        />
-        <Image source={require("../assets/facebook-logo.png")} />
-        <Image source={require("../assets/twitter-logo.png")} />
-      </View> */}
       <View style={styles.registerContainer}>
-        <Text>Don't have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
-          <Text style={styles.register}>Register</Text>
+        <Text>Have an account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
+          <Text style={styles.login}>Login</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -108,13 +83,12 @@ const styles = StyleSheet.create({
   },
   registerContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     width: "58%",
     marginTop: 20,
   },
-  register: {
+  login: {
     color: "#1E90FF",
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   beginBtnText: {
     fontSize: 15,
-    fontWeight: "bold",
+    padding: 10,
   },
   beginBtn: {
     flexDirection: "row",
@@ -57,7 +57,12 @@ const styles = StyleSheet.create({
     height: 50,
     width: 300,
     alignItems: "center",
-    borderRadius: 3,
+    borderRadius: 8,
+    shadowColor: "black",
+    shadowRadius: 4,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    elevation: 4,
   },
   mapImg: {
     width: 410,

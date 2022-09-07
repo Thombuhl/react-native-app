@@ -6,6 +6,7 @@ import FriendsScreen from "../screens/FriendsScreen";
 import HomeScreen from "../screens/HomeScreen";
 import CustomDrawerContent from "../components/CustomDrawer";
 
+
 const Drawer = createDrawerNavigator();
 
 const AppDrawer = () => {
