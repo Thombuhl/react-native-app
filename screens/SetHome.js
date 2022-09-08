@@ -1,13 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { REACT_APP_GOOGLE_API_KEY } from "@env";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Constants from "expo-constants";
+import { AuthContext } from "../context/AuthContext";
+import Autocomplete from "../components/AutoComplete";
 import {
   StyleSheet,
   View,
-  SafeAreaView,
-  ScrollView,
   Dimensions,
   Text,
   TouchableOpacity,
@@ -22,29 +20,10 @@ const INITIAL_REGION = {
   longitudeDelta: 0.02 * (width / height),
 };
 
-function Autocomplete({ label, placeholder, onPlaceSelected }) {
-  return (
-    <>
-      <Text>{label}</Text>
-      <GooglePlacesAutocomplete
-        styles={{ textInput: styles.input }}
-        fetchDetails
-        placeholder={placeholder || ""}
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          onPlaceSelected(details);
-        }}
-        query={{
-          key: REACT_APP_GOOGLE_API_KEY,
-          language: "en",
-        }}
-      />
-    </>
-  );
-}
-
 const SetHome = ({ navigation }) => {
+  const { markPlace } = useContext(AuthContext);
   const [home, setHome] = useState();
+  const [place, setPlace] = useState("");
   // console.log(home);
   const mapRef = useRef(MapView);
 
@@ -63,6 +42,7 @@ const SetHome = ({ navigation }) => {
       longitude: details.geometry.location.lng,
     };
     set(position);
+    setPlace(details.address_components[1].short_name);
     moveToHome(position);
   };
   return (
@@ -85,9 +65,15 @@ const SetHome = ({ navigation }) => {
           />
           <TouchableOpacity
             style={styles.homepoint}
-            onPress={() => navigation.navigate("Destination")}
+            onPress={() => markPlace(home, true, navigation, place)}
           >
             <Text style={styles.homepointText}>Set Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.homepoint}
+            onPress={() => navigation.navigate("HomeScreen")}
+          >
+            <Text style={styles.homepointText}>Back To Main</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -127,6 +113,9 @@ const styles = StyleSheet.create({
   homepoint: {
     backgroundColor: "#778899",
     paddingVertical: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    margin: 5,
   },
   homepointText: {
     fontStyle: "italic",

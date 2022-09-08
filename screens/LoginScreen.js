@@ -17,18 +17,16 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const { login } = useContext(AuthContext);
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <View>
-          <Image
-            style={styles.loginImg}
-            source={require("../assets/login-splash.jpg")}
-            width={250}
-            height={250}
-          />
-        </View>
+    <SafeAreaView style={styles.safeContainer}>
+      <Image
+        source={require("../assets/phone.png")}
+        width={1}
+        height={1}
+        style={styles.loginImg}
+      />
+      <View style={styles.loginContainer}>
         <InputField
-          label={"Email"}
+          label={"Username"}
           value={username}
           onChangeText={(text) => setUsername(text)}
         />
@@ -48,14 +46,32 @@ const LoginScreen = ({ navigation }) => {
           <Text>Login</Text>
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.socialMediaIcons}>
-        <Image
-          style={styles.icons}
-          source={require("../assets/google-logo.png")}
-        />
-        <Image source={require("../assets/facebook-logo.png")} />
-        <Image source={require("../assets/twitter-logo.png")} />
-      </View> */}
+      <View style={styles.icons}>
+        <View style={styles.socialMediaIcons}>
+          <TouchableOpacity>
+            <Image
+              style={styles.icons}
+              source={require("../assets/google-logo.png")}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.socialMediaIcons}>
+          <TouchableOpacity>
+            <Image
+              style={styles.icons}
+              source={require("../assets/facebook-logo.png")}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.socialMediaIcons}>
+          <TouchableOpacity>
+            <Image
+              style={styles.icons}
+              source={require("../assets/twitter-logo.png")}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
       <View style={styles.registerContainer}>
         <Text>Don't have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
@@ -67,10 +83,17 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeContainer: {
     backgroundColor: "#fff",
     alignItems: "center",
+    justifyContent: "center",
     height: "100%",
+  },
+  loginImg: {
+    width: 380,
+  },
+  loginContainer: {
+    width: "75%",
   },
   loginBtn: {
     backgroundColor: "#1E90FF",
@@ -79,24 +102,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 5,
   },
-  cred: {
-    marginTop: 25,
-    marginBottom: 10,
-    padding: 10,
-    borderBottomColor: "#ccc",
-    borderBottomWidth: 1,
+  icons: {
     flexDirection: "row",
-    justifyContent: "space-between",
   },
   forgotPassword: {
     color: "#1E90FF",
     fontSize: 12,
+    justifyContent: "space-between",
   },
   socialMediaIcons: {
-    flexDirection: "row",
     marginTop: 40,
-    width: "60%",
-    justifyContent: "space-between",
+    marginRight: 20,
+    marginLeft: 20,
     backgroundColor: "white",
     borderRadius: 8,
     shadowColor: "black",

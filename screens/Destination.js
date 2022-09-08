@@ -6,12 +6,10 @@ import MapViewDirections from "react-native-maps-directions";
 import Constants from "expo-constants";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-
+import Autocomplete from "../components/AutoComplete";
 import {
   StyleSheet,
   View,
-  SafeAreaView,
-  ScrollView,
   Dimensions,
   Text,
   TouchableOpacity,
@@ -26,58 +24,35 @@ const INITIAL_REGION = {
   longitudeDelta: 0.02 * (width / height),
 };
 
-function Autocomplete({ label, placeholder, onPlaceSelected }) {
-  return (
-    <>
-      <Text>{label}</Text>
-      <GooglePlacesAutocomplete
-        styles={{ textInput: styles.input }}
-        fetchDetails
-        placeholder={placeholder || ""}
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          onPlaceSelected(details);
-        }}
-        query={{
-          key: REACT_APP_GOOGLE_API_KEY,
-          language: "en",
-        }}
-      />
-    </>
-  );
-}
-
 const edgePadding = {
   top: 200,
   right: 50,
   left: 50,
   bottom: 30,
 };
-const Destination = () => {
+
+const Destination = ({ navigation }) => {
   const [origin, setOrigin] = useState();
   const [destination, setDestination] = useState();
   const [directions, setDirections] = useState(false);
   const [distance, setDistance] = useState(0);
   const [duration, setDurtation] = useState(0);
 
-  // console.log(home);
   const mapRef = useRef(MapView);
 
   const moveToHome = async (position) => {
     const camera = await mapRef.current.getCamera();
     if (camera) {
       camera.center = position;
-      mapRef.current.animateCamera(camera, { duration: 1000 });
+      mapRef.current.animateCamera(camera, { duration: 2000 });
     }
   };
-
   const traceRoute = (args) => {
     if (args) {
       setDistance(args.distance);
       setDurtation(args.duration);
     }
   };
-
   const showRoute = () => {
     if ((origin, destination)) {
       setDirections(true);
@@ -132,6 +107,14 @@ const Destination = () => {
           <TouchableOpacity style={styles.homepoint} onPress={showRoute}>
             <Text style={styles.homepointText}>Find Route</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.homepoint}
+            onPress={() => {
+              navigation.navigate("SetHome");
+            }}
+          >
+            <Text style={styles.homepointText}>Back To Home</Text>
+          </TouchableOpacity>
           {distance && duration ? (
             <View>
               <View style={styles.transportation}>
@@ -151,9 +134,16 @@ const Destination = () => {
               <View style={styles.destinationDetails}>
                 <Text>Distance: {distance.toFixed(2)}</Text>
                 <Text>Duration: {Math.ceil(duration)}min</Text>
-                <TouchableOpacity style={styles.destinationDetailsBtn}>
-                  <Text>ROAM</Text>
-                  <MaterialIcons name="chevron-right" size={20} />
+                <TouchableOpacity
+                  style={styles.destinationDetailsBtn}
+                  onPress={() => navigation.navigate("TripSummary")}
+                >
+                  <Text style={styles.destinationText}>Go</Text>
+                  <MaterialIcons
+                    name="chevron-right"
+                    size={20}
+                    color={"#fff"}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -188,16 +178,12 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-  input: {
-    border: "#dcdcdc",
-    borderRadius: 3,
-    borderWidth: 0.5,
-  },
   homepoint: {
     backgroundColor: "#778899",
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: "center",
+    margin: 5,
   },
   homepointText: {
     fontStyle: "italic",
@@ -218,13 +204,29 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   destinationDetails: {
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
+    marginTop: 10,
   },
   destinationDetailsBtn: {
+    alignItems: "center",
+    justifyContent: "center",
     flexDirection: "row",
-    backgroundColor: "#778899",
+    backgroundColor: "#1E90FF",
     width: 60,
-    borderRadius: 5,
+    height: 40,
+    borderRadius: 8,
+    shadowColor: "black",
+    shadowRadius: 4,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    elevation: 4,
+    borderRadius: 3,
+  },
+  destinationText: {
+    fontWeight: "bold",
+    color: "#fff",
   },
 });
 

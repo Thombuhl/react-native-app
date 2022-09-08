@@ -1,29 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
   TextInput,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/FontAwesome";
+import { AuthContext } from "../context/AuthContext";
 
 const HomeScreen = ({ navigation }) => {
+  const { userData } = useContext(AuthContext);
+  console.log(userData);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={{ padding: 10 }}>
+      <ScrollView style={styles.scrollViewContainer}>
         <View style={styles.banner}>
-          <Text style={styles.welcomeMsg}> Hello User</Text>
-          <MaterialIcons name="user-circle" size={30} />
+          <Text style={styles.welcomeMsg}> Hello </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("CustomDrawerContent")}
+          >
+            <MaterialIcons name="user-circle" size={30} />
+          </TouchableOpacity>
         </View>
         <View>
           <View>
             <TouchableOpacity
               style={styles.tripBtn}
-              onPress={() => navigation.navigate("SetHome")}
+              onPress={() => navigation.navigate("NewTripScreen")}
             >
               <Text style={styles.tripBtnText}>New Trip</Text>
               <MaterialIcons name="chevron-right" size={20} />
@@ -32,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
           <View>
             <TouchableOpacity
               style={styles.tripBtn}
-              onPress={() => navigation.navigate()}
+              onPress={() => navigation.navigate("TripSummary")}
             >
               <Text style={styles.tripBtnText}>Continue Trip</Text>
               <MaterialIcons name="chevron-right" size={20} />
@@ -66,6 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
   },
+
   searchBar: {
     flexDirection: "row",
     borderRadius: 8,

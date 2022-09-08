@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Directions } from "react-native-gesture-handler";
+import { AuthContext } from "../context/AuthContext";
 import InputField from "./InputField";
 
 const RegisterScreen = ({ navigation }) => {
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { register } = useContext(AuthContext);
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -23,11 +30,33 @@ const RegisterScreen = ({ navigation }) => {
             height={250}
           />
         </View>
-
-        <InputField label={"Full Name"} />
-        <InputField label={"Email"} />
-        <InputField label={"Password"} inputType={"password"} />
-        <TouchableOpacity style={styles.loginBtn}>
+        <InputField
+          label={"Full Name"}
+          value={fullname}
+          onChangeText={(text) => setFullname(text)}
+        />
+        <InputField
+          label={"Email"}
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <InputField
+          label={"Username"}
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+        />
+        <InputField
+          label={"Password"}
+          inputType={"password"}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={() => {
+            register(fullname, email, username, password);
+          }}
+        >
           <Text>Register</Text>
         </TouchableOpacity>
       </View>
@@ -83,6 +112,7 @@ const styles = StyleSheet.create({
   },
   registerContainer: {
     flexDirection: "row",
+    justifyContent: "space-around",
     width: "58%",
     marginTop: 20,
   },

@@ -8,12 +8,8 @@ const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        component={Onboarding}
-        name="Onboarding"
-        options={{ headerShown: false }}
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen component={Onboarding} name="Onboarding" />
       <Stack.Screen component={LoginScreen} name="LoginScreen" />
       <Stack.Screen component={RegisterScreen} name="RegisterScreen" />
     </Stack.Navigator>
