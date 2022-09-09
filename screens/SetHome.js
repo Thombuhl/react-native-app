@@ -45,6 +45,24 @@ const SetHome = ({ navigation }) => {
     setPlace(details.address_components[1].short_name);
     moveToHome(position);
   };
+
+  const destinationCombine = (
+    navigation,
+    navigateType,
+    home,
+    isHome = false,
+    name
+  ) => {
+    if (home) {
+      markPlace(home, isHome, name);
+      setHome("");
+    } else {
+      Error("Enter origin");
+    }
+
+    navigation.navigate(navigateType);
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -65,7 +83,9 @@ const SetHome = ({ navigation }) => {
           />
           <TouchableOpacity
             style={styles.homepoint}
-            onPress={() => markPlace(home, true, navigation, place)}
+            onPress={() =>
+              destinationCombine(navigation, "Destination", home, true, place)
+            }
           >
             <Text style={styles.homepointText}>Set Home</Text>
           </TouchableOpacity>

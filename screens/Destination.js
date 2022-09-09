@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -7,6 +7,8 @@ import Constants from "expo-constants";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Autocomplete from "../components/AutoComplete";
+import { AuthContext } from "../context/AuthContext";
+
 import {
   StyleSheet,
   View,
@@ -33,10 +35,12 @@ const edgePadding = {
 
 const Destination = ({ navigation }) => {
   const [origin, setOrigin] = useState();
+  const [place, setPlace] = useState("");
   const [destination, setDestination] = useState();
   const [directions, setDirections] = useState(false);
   const [distance, setDistance] = useState(0);
   const [duration, setDurtation] = useState(0);
+  const { markPlace } = useContext(AuthContext);
 
   const mapRef = useRef(MapView);
 
@@ -67,7 +71,30 @@ const Destination = ({ navigation }) => {
       longitude: details.geometry.location.lng,
     };
     set(position);
+    setPlace(details.address_components[1].short_name);
     moveToHome(position);
+  };
+
+  const destinationCombine = (
+    navigation,
+    navigateType,
+    isHome = false,
+    name,
+    place
+  ) => {
+    if (origin) {
+      markPlace((place = origin), isHome, name);
+      setOrigin("");
+    } else {
+      Error("Enter origin");
+    }
+    if (destination) {
+      markPlace((place = destination), isHome, name);
+      setDestination("");
+    } else {
+      Error("Enter origin");
+    }
+    navigation.navigate(navigateType);
   };
   return (
     <>
@@ -136,7 +163,9 @@ const Destination = ({ navigation }) => {
                 <Text>Duration: {Math.ceil(duration)}min</Text>
                 <TouchableOpacity
                   style={styles.destinationDetailsBtn}
-                  onPress={() => navigation.navigate("TripSummary")}
+                  onPress={() =>
+                    destinationCombine(navigation, "TripSummary", false, place)
+                  }
                 >
                   <Text style={styles.destinationText}>Go</Text>
                   <MaterialIcons

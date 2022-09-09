@@ -27,10 +27,10 @@ const INITIAL_REGION = {
 };
 
 const edgePadding = {
-  top: 200,
-  right: 50,
-  left: 50,
-  bottom: 30,
+  top: 2000,
+  right: 2000,
+  left: 2000,
+  bottom: 2000,
 };
 
 const TripSummary = ({ navigation }) => {
@@ -63,9 +63,11 @@ const TripSummary = ({ navigation }) => {
     }
   };
   const showRoute = () => {
-    if ((origin, destination)) {
-      setDirections(true);
-      mapRef.current.fitToCoordinates([origin, destination], { edgePadding });
+    if (places) {
+      mapRef.current.fitToCoordinates(places, {
+        edgePadding: { top: 10, right: 10, bottom: 10, left: 10 },
+        animated: false,
+      });
     }
   };
   return (
@@ -75,11 +77,10 @@ const TripSummary = ({ navigation }) => {
           ref={mapRef}
           style={styles.map}
           provider={PROVIDER_GOOGLE}
-          showsUserLocation={true}
-          followUserLocation={true}
-          zoomEnabled={true}
-
-          // initialRegion={INITIAL_REGION}
+          // showsUserLocation={true}
+          // followUserLocation={true}
+          // zoomEnabled={true}
+          initialRegion={INITIAL_REGION}
         >
           {markers.map((marker) => {
             return <Marker coordinate={marker.coordinates} />;
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.5,
     padding: 8,
-    alignItems: "center",
+    // alignItems: "center",
   },
   map: {
     width: Dimensions.get("window").width,

@@ -45,15 +45,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const markPlace = async (markerDetails, isHome, navigation, name) => {
+  const markPlace = async (markerDetails, isHome, name) => {
     try {
-      navigation.navigate("Destination");
       let response = await axios.post(
         "http://localhost:3000/api/place",
         {
           lat: markerDetails.latitude,
           long: markerDetails.longitude,
-          isHome: true,
+          isHome: isHome,
           name: name,
         },
         {
