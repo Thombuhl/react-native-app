@@ -1,14 +1,13 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NavigationContext } from "@react-navigation/native";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState("");
 
   const fetchPlaces = async () => {
     try {
@@ -40,6 +39,19 @@ export const AuthProvider = ({ children }) => {
       if (response.data) {
         navigation.navigate("SetHome");
       }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchTrips = async () => {
+    try {
+      let response = await axios.get("http://localhost:3000/api/trips", {
+        headers: {
+          authorization: await AsyncStorage.getItem("userToken"),
+        },
+      });
+      return response.data;
     } catch (err) {
       console.log(err);
     }
@@ -141,6 +153,7 @@ export const AuthProvider = ({ children }) => {
         markPlace,
         createTrip,
         fetchPlaces,
+        fetchTrips,
       }}
     >
       {children}

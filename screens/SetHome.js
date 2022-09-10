@@ -11,13 +11,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const { width, height } = Dimensions.get("window");
-
 const INITIAL_REGION = {
   latitude: 40.74869,
   longitude: -73.98573,
-  latitudeDelta: 0.02,
-  longitudeDelta: 0.02 * (width / height),
+  latitudeDelta: 0.5,
+  longitudeDelta: 0.5,
 };
 
 const SetHome = ({ navigation }) => {
@@ -91,7 +89,7 @@ const SetHome = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.homepoint}
-            onPress={() => navigation.navigate("HomeScreen")}
+            onPress={() => navigation.navigate("Drawer")}
           >
             <Text style={styles.homepointText}>Back To Main</Text>
           </TouchableOpacity>

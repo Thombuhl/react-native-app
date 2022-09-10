@@ -10,21 +10,20 @@ import {
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/FontAwesome";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = ({ navigation }) => {
   const { userData } = useContext(AuthContext);
   console.log(userData);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={styles.scrollViewContainer}>
-        <View style={styles.banner}>
-          <Text style={styles.welcomeMsg}> Hello </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("CustomDrawerContent")}
-          >
-            <MaterialIcons name="user-circle" size={30} />
-          </TouchableOpacity>
-        </View>
+      <View style={styles.banner}>
+        <Text style={styles.welcomeMsg}> Hello {userData.fullName}</Text>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <MaterialIcons name="user-circle" size={30} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttons}>
         <View>
           <View>
             <TouchableOpacity
@@ -47,14 +46,14 @@ const HomeScreen = ({ navigation }) => {
           <View>
             <TouchableOpacity
               style={styles.tripBtn}
-              onPress={() => navigation.navigate()}
+              onPress={() => navigation.navigate("PastTripsScreen")}
             >
               <Text style={styles.tripBtnText}>Past Trips</Text>
               <MaterialIcons name="chevron-right" size={20} />
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -62,6 +61,10 @@ const HomeScreen = ({ navigation }) => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  buttons: {
+    padding: 20,
+    alignItems: "center",
+  },
   banner: {
     justifyContent: "space-between",
     flexDirection: "row",

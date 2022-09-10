@@ -6,39 +6,41 @@ import {
 } from "@react-navigation/drawer";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../context/AuthContext";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const CustomDrawerContent = (props) => {
   const { logout } = useContext(AuthContext);
   return (
-    <DrawerContentScrollView {...props} style={styles.drawerContainer}>
-      <View style={styles.drawerListContainer}>
-        <DrawerItemList {...props} />
-      </View>
-      <View style={styles.bottomRibbon}>
+    <View style={{ flex: 1 }}>
+      <DrawerContentScrollView {...props}>
+        <View>
+          <DrawerItemList {...props} />
+        </View>
+      </DrawerContentScrollView>
+      <View>
         <TouchableOpacity
           onPress={() => {
             logout();
           }}
+          style={styles.botRibbon}
         >
-          <Text>Sign Out</Text>
+          <MaterialIcons name="logout" size={30} />
+          <Text style={styles.botSignoutText}>Sign Out</Text>
         </TouchableOpacity>
       </View>
-    </DrawerContentScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  drawerContainer: {
-    display: "flex",
+  botRibbon: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 25,
+    backgroundColor: "#D3D3D3",
   },
-  drawerListContainer: {
-    height: "100%",
-    borderColor: "#909090",
-  },
-  bottomRibbon: {
-    borderColor: "#909090",
-    borderWidth: 1,
-    height: "70%",
+  botSignoutText: {
+    paddingLeft: 10,
   },
 });
 export default CustomDrawerContent;

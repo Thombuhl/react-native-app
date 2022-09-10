@@ -1,12 +1,12 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import SetHome from "../screens/SetHome";
 import Destination from "../screens/Destination";
 import AppDrawer from "./AppDrawer";
 import NewTripScreen from "../screens/NewTripScreen";
 import TripSummary from "../screens/TripSummary";
 import HomeScreen from "../screens/HomeScreen";
+import PastTripsScreen from "../screens/PastTripsScreen";
 const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
@@ -18,6 +18,7 @@ const AppStack = () => {
       <Stack.Screen component={NewTripScreen} name="NewTripScreen" />
       <Stack.Screen component={TripSummary} name="TripSummary" />
       <Stack.Screen component={HomeScreen} name="HomeScreen" />
+      <Stack.Screen component={PastTripsScreen} name="PastTripsScreen" />
     </Stack.Navigator>
   );
 };

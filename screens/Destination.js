@@ -8,7 +8,6 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Autocomplete from "../components/AutoComplete";
 import { AuthContext } from "../context/AuthContext";
-
 import {
   StyleSheet,
   View,
@@ -17,15 +16,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const { width, height } = Dimensions.get("window");
-
+//Initial Region for map view.
 const INITIAL_REGION = {
   latitude: 40.74869,
   longitude: -73.98573,
-  latitudeDelta: 0.02,
-  longitudeDelta: 0.02 * (width / height),
+  latitudeDelta: 0.05,
+  longitudeDelta: 0.05,
 };
 
+//Padding for route display.
 const edgePadding = {
   top: 200,
   right: 50,
@@ -35,32 +34,34 @@ const edgePadding = {
 
 const Destination = ({ navigation }) => {
   const [origin, setOrigin] = useState();
-  const [place, setPlace] = useState("");
   const [destination, setDestination] = useState();
+  const [place, setPlace] = useState("");
   const [directions, setDirections] = useState(false);
   const [distance, setDistance] = useState(0);
   const [duration, setDurtation] = useState(0);
   const { markPlace } = useContext(AuthContext);
 
+  //useRef hook to grab MapView.
   const mapRef = useRef(MapView);
 
   const moveToHome = async (position) => {
     const camera = await mapRef.current.getCamera();
     if (camera) {
       camera.center = position;
-      mapRef.current.animateCamera(camera, { duration: 2000 });
+      mapRef.current.animateCamera(camera, { duration: 1500 });
+    }
+  };
+  //Center route with edge padding
+  const showRoute = () => {
+    if ((origin, destination)) {
+      setDirections(true);
+      mapRef.current.fitToCoordinates([origin, destination], { edgePadding });
     }
   };
   const traceRoute = (args) => {
     if (args) {
       setDistance(args.distance);
       setDurtation(args.duration);
-    }
-  };
-  const showRoute = () => {
-    if ((origin, destination)) {
-      setDirections(true);
-      mapRef.current.fitToCoordinates([origin, destination], { edgePadding });
     }
   };
 
@@ -84,13 +85,11 @@ const Destination = ({ navigation }) => {
   ) => {
     if (origin) {
       markPlace((place = origin), isHome, name);
-      setOrigin("");
     } else {
       Error("Enter origin");
     }
     if (destination) {
       markPlace((place = destination), isHome, name);
-      setDestination("");
     } else {
       Error("Enter origin");
     }
@@ -160,7 +159,7 @@ const Destination = ({ navigation }) => {
               </View>
               <View style={styles.destinationDetails}>
                 <Text>Distance: {distance.toFixed(2)}</Text>
-                <Text>Duration: {Math.ceil(duration)}min</Text>
+                <Text>Duration: {Math.floor(duration)}min</Text>
                 <TouchableOpacity
                   style={styles.destinationDetailsBtn}
                   onPress={() =>

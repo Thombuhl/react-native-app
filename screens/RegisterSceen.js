@@ -1,4 +1,6 @@
 import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import InputField from "./InputField";
 import {
   View,
   Text,
@@ -8,9 +10,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { Directions } from "react-native-gesture-handler";
-import { AuthContext } from "../context/AuthContext";
-import InputField from "./InputField";
 
 const RegisterScreen = ({ navigation }) => {
   const [fullname, setFullname] = useState("");

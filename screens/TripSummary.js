@@ -17,13 +17,11 @@ import {
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
-const { width, height } = Dimensions.get("window");
-
 const INITIAL_REGION = {
   latitude: 40.74869,
   longitude: -73.98573,
-  latitudeDelta: 0.02,
-  longitudeDelta: 0.02 * (width / height),
+  latitudeDelta: 5,
+  longitudeDelta: 5,
 };
 
 const edgePadding = {
@@ -49,27 +47,6 @@ const TripSummary = ({ navigation }) => {
   console.log(markers);
   const mapRef = useRef(MapView);
 
-  const moveToHome = async (position) => {
-    const camera = await mapRef.current.getCamera();
-    if (camera) {
-      camera.center = position;
-      mapRef.current.animateCamera(camera, { duration: 2000 });
-    }
-  };
-  const traceRoute = (args) => {
-    if (args) {
-      setDistance(args.distance);
-      setDurtation(args.duration);
-    }
-  };
-  const showRoute = () => {
-    if (places) {
-      mapRef.current.fitToCoordinates(places, {
-        edgePadding: { top: 10, right: 10, bottom: 10, left: 10 },
-        animated: false,
-      });
-    }
-  };
   return (
     <View style={styles.container}>
       <View>
@@ -91,7 +68,7 @@ const TripSummary = ({ navigation }) => {
             <View>
               <Text style={styles.tripSummaryText}>Your Trip So Far</Text>
             </View>
-            <TouchableOpacity style={styles.homepoint} onPress={showRoute}>
+            <TouchableOpacity style={styles.homepoint}>
               <Text style={styles.homepointText}>Trace Places</Text>
             </TouchableOpacity>
 
@@ -101,7 +78,7 @@ const TripSummary = ({ navigation }) => {
                 navigation.navigate("Destination");
               }}
             >
-              <Text style={styles.homepointText}>Trip Finished </Text>
+              <Text style={styles.homepointText}>Save Trip</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.homepoint}

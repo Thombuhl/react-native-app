@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-const Onboarding = ({ navigation }) => {
+const StartScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
     width: 410,
   },
 });
-export default Onboarding;
+export default StartScreen;
